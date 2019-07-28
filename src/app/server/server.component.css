@@ -6,3 +6,25 @@
   width: 300px;
   border-color: cornflowerblue;
 }
+
+.btn-margin {
+  margin: 10px 10px;
+  width: 100px;
+}
+
+.ingredients {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.center {
+  text-align: center;
+}
+
+.panel {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  margin: 10px;
+}

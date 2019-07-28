@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Student } from '../../shared/student.model';
+import { Recipe } from '../../shared/recipe.model';
 
 @Component({
   // select: '[app-server]',
@@ -8,37 +8,74 @@ import { Student } from '../../shared/student.model';
   styleUrls: ['./server.component.css']
 })
 export class ServerComponent {
-    serverId = 10;
-    serverStatus = 'offLine';
-    counter = 0;
-    isLogin = false;
-    userName: string;
-    students: Student[] = [new Student('Bill Gates', 'Computer Science'),
-                           new Student('Steve Jobs', 'Computer Science'),
-                           new Student('Elon Musk', 'Computer Science')];
+    hasError = false;
+    hasDish = false;
+    ingredients1 = ["Egg", "Syrup", "Cheese", "Bread", "Lettuce",
+                  "Potato"];
+    ingredients2 = ["Ham", "Pancake", "Cereal", "Onion", "Pasta",
+    "Meatball"];
+    selected = [];
+    dish: string;
 
-    getServerStatus() {
-      return this.serverStatus;
+    recipes = [
+      new Recipe("Egg Omelette", ["Egg", "Onion", "Ham",
+        "Cheese"].sort()),
+      new Recipe("Cheese Burger", ["Bread",
+        "Cheese", "Ham"].sort()),
+      new Recipe("Pancake", ["Pancake",
+        "Syrup"].sort()),
+      new Recipe("Meatball Pasta", ["Pasta",
+        "Meatball"].sort())];
+
+
+    selectIngredient(ingredient: string) {
+        this.selected.push(ingredient)
     }
 
-    counterPlus() {
-     this.counter ++;
+    checkRecipe() {
+      this.clearError();
+      this.clearDish();
+
+      for(let i of this.recipes) {
+        if(i.ingredients.length !== this.selected.length)
+          continue;
+
+        let sorted = this.selected.sort();
+
+        for(let j = 0; j < this.selected.length; j++) {
+          if(sorted[j] !== i.ingredients[j]) {
+            break;
+          }
+          if(j === this.selected.length - 1) {
+            this.dish = i.name;
+            this.hasDish = true;
+          }
+        }
+      }
+
+      if(!this.hasDish) this.setError();
+      this.clearSelected();
     }
 
-    resetCounter() {
-      this.counter = 0;
+    setError() {
+      this.hasError = true;
     }
 
-    login() {
-      this.isLogin = true;
+    clearError() {
+      this.hasError = false;
     }
 
-    signOut() {
-      this.isLogin = false;
+    clearDish() {
+      this.hasDish = false;
     }
 
-    // Event Binding
-    onUpdateUserName(event: Event) {
-      this.userName = (<HTMLInputElement>event.target).value;
+    clearSelected() {
+      this.selected = [];
+    }
+
+    reset() {
+      this.hasError = false;
+      this.selected = [];
+      this.hasDish = false;
     }
 }
